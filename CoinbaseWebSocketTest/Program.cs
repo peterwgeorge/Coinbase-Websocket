@@ -1,6 +1,6 @@
 ﻿using System.Net.WebSockets;
 using CoinbaseWebSocketConstructs;
-using AmazonSecretsManagerModels;
+using AmazonSecretsManagerHandler;
 
 class Program
 {  

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CoinbaseWebSocketConstructs")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d722cf2d879ea6aa580b1c7d3bc1f80c3e83f0b5")]
 [assembly: System.Reflection.AssemblyProductAttribute("CoinbaseWebSocketConstructs")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CoinbaseWebSocketConstructs")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

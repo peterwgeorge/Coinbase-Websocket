@@ -401,17 +401,18 @@
           "buildTransitive/net8.0/System.Text.Json.targets": {}
         }
       },
-      "AmazonSecretsManagerModels/1.0.0": {
+      "AmazonSecretsManagerHandler/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
+          "AWSSDK.SecretsManager": "3.7.400.130",
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {
-          "bin/placeholder/AmazonSecretsManagerModels.dll": {}
+          "bin/placeholder/AmazonSecretsManagerHandler.dll": {}
         },
         "runtime": {
-          "bin/placeholder/AmazonSecretsManagerModels.dll": {}
+          "bin/placeholder/AmazonSecretsManagerHandler.dll": {}
         }
       },
       "CoinbaseWebSocketConstructs/1.0.0": {
@@ -419,7 +420,7 @@
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
           "AWSSDK.SecretsManager": "3.7.400.130",
-          "AmazonSecretsManagerModels": "1.0.0",
+          "AmazonSecretsManagerHandler": "1.0.0",
           "Jose-JWT": "5.1.1",
           "Microsoft.IdentityModel.Tokens": "8.8.0",
           "Newtonsoft.Json": "13.0.3",
@@ -1199,10 +1200,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "AmazonSecretsManagerModels/1.0.0": {
+    "AmazonSecretsManagerHandler/1.0.0": {
       "type": "project",
-      "path": "../AmazonSecretsManagerModels/AmazonSecretsManagerModels.csproj",
-      "msbuildProject": "../AmazonSecretsManagerModels/AmazonSecretsManagerModels.csproj"
+      "path": "../AmazonSecretsManagerHandler/AmazonSecretsManagerHandler.csproj",
+      "msbuildProject": "../AmazonSecretsManagerHandler/AmazonSecretsManagerHandler.csproj"
     },
     "CoinbaseWebSocketConstructs/1.0.0": {
       "type": "project",
@@ -1212,6 +1213,7 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "AmazonSecretsManagerHandler >= 1.0.0",
       "CoinbaseWebSocketConstructs >= 1.0.0",
       "Microsoft.Extensions.Configuration >= 9.0.3",
       "Microsoft.Extensions.Configuration.UserSecrets >= 9.0.3",
@@ -1243,6 +1245,9 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
+            "/Users/petergeorge/Projects/CoinbaseWebSocketTest/AmazonSecretsManagerHandler/AmazonSecretsManagerHandler.csproj": {
+              "projectPath": "/Users/petergeorge/Projects/CoinbaseWebSocketTest/AmazonSecretsManagerHandler/AmazonSecretsManagerHandler.csproj"
+            },
             "/Users/petergeorge/Projects/CoinbaseWebSocketTest/CoinbaseWebSocketConstructs/CoinbaseWebSocketConstructs.csproj": {
               "projectPath": "/Users/petergeorge/Projects/CoinbaseWebSocketTest/CoinbaseWebSocketConstructs/CoinbaseWebSocketConstructs.csproj"
             }

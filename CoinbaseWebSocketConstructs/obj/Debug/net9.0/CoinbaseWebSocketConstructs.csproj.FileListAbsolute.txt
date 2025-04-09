@@ -8,6 +8,7 @@
 /Users/petergeorge/Projects/CoinbaseWebSocketTest/CoinbaseWebSocketConstructs/obj/Debug/net9.0/CoinbaseWebSocketConstructs.AssemblyInfoInputs.cache
 /Users/petergeorge/Projects/CoinbaseWebSocketTest/CoinbaseWebSocketConstructs/obj/Debug/net9.0/CoinbaseWebSocketConstructs.AssemblyInfo.cs
 /Users/petergeorge/Projects/CoinbaseWebSocketTest/CoinbaseWebSocketConstructs/obj/Debug/net9.0/CoinbaseWebSocketConstructs.csproj.CoreCompileInputs.cache
+/Users/petergeorge/Projects/CoinbaseWebSocketTest/CoinbaseWebSocketConstructs/obj/Debug/net9.0/CoinbaseWebSocketConstructs.sourcelink.json
 /Users/petergeorge/Projects/CoinbaseWebSocketTest/CoinbaseWebSocketConstructs/obj/Debug/net9.0/Coinbase.1E8F6BF1.Up2Date
 /Users/petergeorge/Projects/CoinbaseWebSocketTest/CoinbaseWebSocketConstructs/obj/Debug/net9.0/CoinbaseWebSocketConstructs.dll
 /Users/petergeorge/Projects/CoinbaseWebSocketTest/CoinbaseWebSocketConstructs/obj/Debug/net9.0/refint/CoinbaseWebSocketConstructs.dll

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinbaseWebSocketTest", "Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinbaseWebSocketConstructs", "CoinbaseWebSocketConstructs\CoinbaseWebSocketConstructs.csproj", "{9F18DFF7-71D2-40CB-88F3-E4D20F3DE04D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonSecretsManagerModels", "AmazonSecretsManagerModels\AmazonSecretsManagerModels.csproj", "{6A7428DF-F561-40E4-9147-6FB4D9DBFFF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonSecretsManagerHandler", "AmazonSecretsManagerHandler\AmazonSecretsManagerHandler.csproj", "{6A7428DF-F561-40E4-9147-6FB4D9DBFFF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

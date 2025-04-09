@@ -3,9 +3,9 @@ using Amazon;
 using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 using System;
-using System.Text.Json;
 using System.Threading.Tasks;
 using AmazonSecretsManagerHandler.Models;
+using Newtonsoft.Json;
 
 public static class SecretsProvider
 {
@@ -52,7 +52,7 @@ public static class SecretsProvider
             var response = await client.GetSecretValueAsync(request);
             string secretJson = response.SecretString;
             
-            var result = JsonSerializer.Deserialize<CoinbaseApiKey>(secretJson);
+            var result = JsonConvert.DeserializeObject<CoinbaseApiKey>(secretJson);
             if (result == null)
             {
                 throw new InvalidOperationException("Failed to deserialize Coinbase credentials");

@@ -7,7 +7,6 @@ using Jose;
 using Newtonsoft.Json;
 using AmazonSecretsManagerHandler;
 
-
 public class CoinbaseWebSocketSubscribeMessage
 {
     [JsonProperty(PropertyName = "type")]
@@ -40,7 +39,7 @@ public class CoinbaseWebSocketSubscribeMessage
 
         var payload = new Dictionary<string, object>
         {
-            //{ "sub", SecretsProvider.GetApiKeyName()},
+            { "sub", SecretsProvider.GetApiKeyName()},
             { "iss", "coinbase-cloud" },
             { "nbf", Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds) },
             { "exp", Convert.ToInt64((DateTime.UtcNow.AddMinutes(1) - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds) },
@@ -48,7 +47,7 @@ public class CoinbaseWebSocketSubscribeMessage
 
         var extraHeaders = new Dictionary<string, object>
         {
-            //{ "kid", SecretsProvider.GetApiKeyName() },
+            { "kid", SecretsProvider.GetApiKeyName() },
             // add nonce to prevent replay attacks with a random 10 digit number
             { "nonce", RandomHex(10) },
             { "typ", "JWT"}
@@ -86,7 +85,7 @@ public class CoinbaseWebSocketSubscribeMessage
     static string ParseKey() 
     {
         List<string> keyLines = new List<string>();
-        //keyLines.AddRange(SecretsProvider.GetSecretKey().Split('\n', StringSplitOptions.RemoveEmptyEntries));
+        keyLines.AddRange(SecretsProvider.GetSecretKey().Split('\n', StringSplitOptions.RemoveEmptyEntries));
         keyLines.RemoveAt(0);
         keyLines.RemoveAt(keyLines.Count - 1);
         return String.Join("", keyLines);
