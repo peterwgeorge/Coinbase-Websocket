@@ -28,7 +28,9 @@ x86/
 [Aa][Rr][Mm]64/
 bld/
 [Bb]in/
+**/**/[Bb]in/
 [Oo]bj/
+**/**/[Oo]bj/
 [Ll]og/
 [Ll]ogs/
 
@@ -100,9 +102,12 @@ StyleCopReport.xml
 sourcelink.json
 **/sourcelink.json
 
-# Generated files
-[Aa]ssemblyInfo.cs
-**/Properties/[Aa]ssemblyInfo.cs
+# AssemblyInfo files
+**/[Aa]ssemblyInfo.cs
+**/[Aa]ssemblyInfo.cs.bak
+**/*.AssemblyInfo.cs
+**/*.AssemblyInfoInputs.cache
+**/*.AssemblyInfo.cache
 
 # Chutzpah Test files
 _Chutzpah*
