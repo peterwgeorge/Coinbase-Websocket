@@ -82,6 +82,7 @@ public class CoinbaseWebSocketSubscribeMessage
         }
     }
 
+    //For secret keys with the Coinbase newline characters and Begin/End secret message (ie ECDSA signature algorithm)
     static string ParseKey() 
     {
         List<string> keyLines = new List<string>();
