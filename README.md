@@ -72,7 +72,6 @@ The application handles WebSocket connection establishment, authentication, subs
 The project uses the following NuGet packages:
 - AWSSDK.SecretsManager
 - Newtonsoft.Json
-- System.Net.WebSockets.Client
 - Microsoft.IdentityModel.Tokens
 - System.IdentityModel.Tokens.Jwt
 - Jose-JWT
