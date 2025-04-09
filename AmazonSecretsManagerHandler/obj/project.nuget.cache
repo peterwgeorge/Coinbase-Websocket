@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "42B1Y/78PYw=",
+  "success": true,
+  "projectFilePath": "/Users/petergeorge/Projects/CoinbaseWebSocketTest/AmazonSecretsManagerHandler/AmazonSecretsManagerHandler.csproj",
+  "expectedPackageFiles": [
+    "/Users/petergeorge/.nuget/packages/awssdk.core/3.7.402.36/awssdk.core.3.7.402.36.nupkg.sha512",
+    "/Users/petergeorge/.nuget/packages/awssdk.secretsmanager/3.7.400.130/awssdk.secretsmanager.3.7.400.130.nupkg.sha512",
+    "/Users/petergeorge/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
