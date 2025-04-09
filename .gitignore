@@ -97,6 +97,12 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
+sourcelink.json
+**/sourcelink.json
+
+# Generated files
+[Aa]ssemblyInfo.cs
+**/Properties/[Aa]ssemblyInfo.cs
 
 # Chutzpah Test files
 _Chutzpah*
@@ -226,6 +232,7 @@ _pkginfo.txt
 # Visual Studio cache files
 # files ending in .cache can be ignored
 *.[Cc]ache
+**/*.cache
 # but keep track of directories ending in .cache
 !?*.[Cc]ache/
 
