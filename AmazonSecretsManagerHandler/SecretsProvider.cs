@@ -5,8 +5,8 @@ using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 using System;
 using System.Threading.Tasks;
-using SignatureHandling;
 using Newtonsoft.Json;
+using AmazonSecretsManagerHandler.Models;
 
 public static class SecretsProvider
 {
@@ -18,7 +18,7 @@ public static class SecretsProvider
     {
         if (!_initialized)
         {
-            var credentials = await FetchCoinbaseCredentials();
+            var credentials = await FetchCredentials();
             lock (_lock)
             {
                 _credentials = credentials;
@@ -27,17 +27,7 @@ public static class SecretsProvider
         }
     }
 
-    public static SigningMetadata GetCoinbaseCredentials()
-    {
-        if (!_initialized)
-        {
-            throw new InvalidOperationException("SecretsProvider has not been initialized. Call Initialize() first.");
-        }
-        
-        return _credentials!;
-    }
-
-    private static async Task<SigningMetadata> FetchCoinbaseCredentials()
+    private static async Task<SigningMetadata> FetchCredentials()
     {
         string secretName = "Coinbase-Test-Key-1";
         string region = "us-east-1";
@@ -108,6 +98,15 @@ public static class SecretsProvider
             throw new InvalidOperationException("Failed to deserialize Coinbase credentials");
         }
 
-        return _credentials.Secret;
+        return _credentials.Algorithm == "ecdsa" ? ExtractPemContent(_credentials.Secret) : _credentials.Secret;
     }
+
+    public static string ExtractPemContent(string pem)
+    {
+        var lines = pem.Split('\n', StringSplitOptions.RemoveEmptyEntries)
+                    .Where(line => !line.StartsWith("-----"))
+                    .ToArray();
+        return string.Concat(lines);
+    }
+
 }

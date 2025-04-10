@@ -6,6 +6,8 @@ using System.Security.Cryptography;
 using Jose;
 using Newtonsoft.Json;
 using AmazonSecretsManagerHandler;
+using SignatureHandling;
+using SignatureHandling.Interfaces;
 
 public class CoinbaseWebSocketSubscribeMessage
 {
@@ -31,10 +33,7 @@ public class CoinbaseWebSocketSubscribeMessage
 
     static string GenerateToken()
     {
-        var privateKeyBytes = Convert.FromBase64String(ParseKey()); // Assuming PEM is base64 encoded
-        using var key = ECDsa.Create();
-        key.ImportECPrivateKey(privateKeyBytes, out _);
-
+        ISignatureAlgorithm algo = SignatureAlgorithmFactory.Create();
         var payload = new Dictionary<string, object>
         {
             { "sub", SecretsProvider.GetApiKeyName()},
@@ -45,13 +44,11 @@ public class CoinbaseWebSocketSubscribeMessage
 
         var extraHeaders = new Dictionary<string, object>
         {
-            { "kid", SecretsProvider.GetApiKeyName() },
             // add nonce to prevent replay attacks with a random 10 digit number
             { "nonce", RandomHex(10) },
-            { "typ", "JWT"}
         };
 
-        var encodedToken = JWT.Encode(payload, key, JwsAlgorithm.ES256, extraHeaders);
+        var encodedToken = algo.SignJwt(payload, extraHeaders);
         return encodedToken;
     }
 

@@ -1,4 +1,4 @@
-namespace SignatureHandling;
+namespace AmazonSecretsManagerHandler.Models;
 
 using Newtonsoft.Json;
 
