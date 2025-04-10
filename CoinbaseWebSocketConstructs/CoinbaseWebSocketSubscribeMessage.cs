@@ -21,8 +21,6 @@ public class CoinbaseWebSocketSubscribeMessage
     [JsonProperty(PropertyName = "jwt")]
     public string Jwt { get; private set; }
     
-
-
     public CoinbaseWebSocketSubscribeMessage(string type, string channel, string[] product_ids)
     {
         Type = type;

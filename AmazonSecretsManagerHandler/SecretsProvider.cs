@@ -1,15 +1,16 @@
 namespace AmazonSecretsManagerHandler;
+
 using Amazon;
 using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 using System;
 using System.Threading.Tasks;
-using AmazonSecretsManagerHandler.Models;
+using SignatureHandling;
 using Newtonsoft.Json;
 
 public static class SecretsProvider
 {
-    private static CoinbaseApiKey? _coinbaseCredentials;
+    private static SigningMetadata? _credentials;
     private static readonly object _lock = new object();
     private static bool _initialized = false;
 
@@ -20,23 +21,23 @@ public static class SecretsProvider
             var credentials = await FetchCoinbaseCredentials();
             lock (_lock)
             {
-                _coinbaseCredentials = credentials;
+                _credentials = credentials;
                 _initialized = true;
             }
         }
     }
 
-    public static CoinbaseApiKey GetCoinbaseCredentials()
+    public static SigningMetadata GetCoinbaseCredentials()
     {
         if (!_initialized)
         {
             throw new InvalidOperationException("SecretsProvider has not been initialized. Call Initialize() first.");
         }
         
-        return _coinbaseCredentials!;
+        return _credentials!;
     }
 
-    private static async Task<CoinbaseApiKey> FetchCoinbaseCredentials()
+    private static async Task<SigningMetadata> FetchCoinbaseCredentials()
     {
         string secretName = "Coinbase-Test-Key-1";
         string region = "us-east-1";
@@ -52,7 +53,7 @@ public static class SecretsProvider
             var response = await client.GetSecretValueAsync(request);
             string secretJson = response.SecretString;
             
-            var result = JsonConvert.DeserializeObject<CoinbaseApiKey>(secretJson);
+            var result = JsonConvert.DeserializeObject<SigningMetadata>(secretJson);
             if (result == null)
             {
                 throw new InvalidOperationException("Failed to deserialize Coinbase credentials");
@@ -67,6 +68,21 @@ public static class SecretsProvider
         }
     }
 
+    
+    public static string GetAlgorithmString()
+    {
+        if (!_initialized)
+        {
+            throw new InvalidOperationException("SecretsProvider has not been initialized. Call Initialize() first.");
+        }
+
+        if(_credentials == null){
+            throw new InvalidOperationException("Failed to deserialize Coinbase credentials");
+        }
+
+        return _credentials.Algorithm;
+    }
+
     public static string GetApiKeyName()
     {
         if (!_initialized)
@@ -74,11 +90,11 @@ public static class SecretsProvider
             throw new InvalidOperationException("SecretsProvider has not been initialized. Call Initialize() first.");
         }
 
-        if(_coinbaseCredentials == null){
+        if(_credentials == null){
             throw new InvalidOperationException("Failed to deserialize Coinbase credentials");
         }
 
-        return _coinbaseCredentials.Name;
+        return _credentials.KeyId;
     }
 
     public static string GetSecretKey()
@@ -88,10 +104,10 @@ public static class SecretsProvider
             throw new InvalidOperationException("SecretsProvider has not been initialized. Call Initialize() first.");
         }
 
-        if(_coinbaseCredentials == null){
+        if(_credentials == null){
             throw new InvalidOperationException("Failed to deserialize Coinbase credentials");
         }
 
-        return _coinbaseCredentials.PrivateKey;
+        return _credentials.Secret;
     }
 }
