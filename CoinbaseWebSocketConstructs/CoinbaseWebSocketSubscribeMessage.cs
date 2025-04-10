@@ -48,45 +48,8 @@ public class CoinbaseWebSocketSubscribeMessage
             { "nonce", RandomHex(10) },
         };
 
-        var encodedToken = algo.SignJwt(payload, extraHeaders);
-        return encodedToken;
+        return algo.SignJwt(payload, extraHeaders);
     }
-
-    public static bool IsTokenValid(string token, string tokenId, string secret) {
-        if (token == null)
-            return false;
-
-        var key = ECDsa.Create();
-        key?.ImportECPrivateKey(Convert.FromBase64String(secret), out _);
-
-        var securityKey = new ECDsaSecurityKey(key) { KeyId = tokenId };
-
-        try {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            tokenHandler.ValidateToken(token, new TokenValidationParameters {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = securityKey,
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ClockSkew = TimeSpan.Zero
-            }, out var validatedToken);
-
-            return true;
-        } catch {
-            return false;
-        }
-    }
-
-    //For secret keys with the Coinbase newline characters and Begin/End secret message (ie ECDSA signature algorithm)
-    static string ParseKey() 
-    {
-        List<string> keyLines = new List<string>();
-        keyLines.AddRange(SecretsProvider.GetSecretKey().Split('\n', StringSplitOptions.RemoveEmptyEntries));
-        keyLines.RemoveAt(0);
-        keyLines.RemoveAt(keyLines.Count - 1);
-        return String.Join("", keyLines);
-    }
-
 
     static string RandomHex(int digits) {
         using(var random = RandomNumberGenerator.Create()){
