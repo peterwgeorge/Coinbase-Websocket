@@ -1,11 +1,10 @@
 namespace CoinbaseWebSocketConstructs;
 
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
-using Jose;
 using Newtonsoft.Json;
 using AmazonSecretsManagerHandler;
+using SignatureHandling;
+using SignatureHandling.Interfaces;
 
 public class CoinbaseWebSocketSubscribeMessage
 {
@@ -21,8 +20,6 @@ public class CoinbaseWebSocketSubscribeMessage
     [JsonProperty(PropertyName = "jwt")]
     public string Jwt { get; private set; }
     
-
-
     public CoinbaseWebSocketSubscribeMessage(string type, string channel, string[] product_ids)
     {
         Type = type;
@@ -33,10 +30,7 @@ public class CoinbaseWebSocketSubscribeMessage
 
     static string GenerateToken()
     {
-        var privateKeyBytes = Convert.FromBase64String(ParseKey()); // Assuming PEM is base64 encoded
-        using var key = ECDsa.Create();
-        key.ImportECPrivateKey(privateKeyBytes, out _);
-
+        ISignatureAlgorithm algo = SignatureAlgorithmFactory.Create();
         var payload = new Dictionary<string, object>
         {
             { "sub", SecretsProvider.GetApiKeyName()},
@@ -47,51 +41,12 @@ public class CoinbaseWebSocketSubscribeMessage
 
         var extraHeaders = new Dictionary<string, object>
         {
-            { "kid", SecretsProvider.GetApiKeyName() },
             // add nonce to prevent replay attacks with a random 10 digit number
             { "nonce", RandomHex(10) },
-            { "typ", "JWT"}
         };
 
-        var encodedToken = JWT.Encode(payload, key, JwsAlgorithm.ES256, extraHeaders);
-        return encodedToken;
+        return algo.SignJwt(payload, extraHeaders);
     }
-
-    public static bool IsTokenValid(string token, string tokenId, string secret) {
-        if (token == null)
-            return false;
-
-        var key = ECDsa.Create();
-        key?.ImportECPrivateKey(Convert.FromBase64String(secret), out _);
-
-        var securityKey = new ECDsaSecurityKey(key) { KeyId = tokenId };
-
-        try {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            tokenHandler.ValidateToken(token, new TokenValidationParameters {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = securityKey,
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ClockSkew = TimeSpan.Zero
-            }, out var validatedToken);
-
-            return true;
-        } catch {
-            return false;
-        }
-    }
-
-    //For secret keys with the Coinbase newline characters and Begin/End secret message (ie ECDSA signature algorithm)
-    static string ParseKey() 
-    {
-        List<string> keyLines = new List<string>();
-        keyLines.AddRange(SecretsProvider.GetSecretKey().Split('\n', StringSplitOptions.RemoveEmptyEntries));
-        keyLines.RemoveAt(0);
-        keyLines.RemoveAt(keyLines.Count - 1);
-        return String.Join("", keyLines);
-    }
-
 
     static string RandomHex(int digits) {
         using(var random = RandomNumberGenerator.Create()){

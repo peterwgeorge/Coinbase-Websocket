@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinbaseWebSocketConstructs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonSecretsManagerHandler", "AmazonSecretsManagerHandler\AmazonSecretsManagerHandler.csproj", "{6A7428DF-F561-40E4-9147-6FB4D9DBFFF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureHandling", "SignatureHandling\SignatureHandling.csproj", "{44ED1708-076E-4EEF-8134-37F5EEDE6360}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{6A7428DF-F561-40E4-9147-6FB4D9DBFFF8}.Release|x64.Build.0 = Release|Any CPU
 		{6A7428DF-F561-40E4-9147-6FB4D9DBFFF8}.Release|x86.ActiveCfg = Release|Any CPU
 		{6A7428DF-F561-40E4-9147-6FB4D9DBFFF8}.Release|x86.Build.0 = Release|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Debug|x64.Build.0 = Debug|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Debug|x86.Build.0 = Debug|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Release|x64.ActiveCfg = Release|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Release|x64.Build.0 = Release|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Release|x86.ActiveCfg = Release|Any CPU
+		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

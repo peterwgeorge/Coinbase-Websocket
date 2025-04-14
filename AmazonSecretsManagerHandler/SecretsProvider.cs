@@ -1,15 +1,16 @@
 namespace AmazonSecretsManagerHandler;
+
 using Amazon;
 using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 using System;
 using System.Threading.Tasks;
-using AmazonSecretsManagerHandler.Models;
 using Newtonsoft.Json;
+using AmazonSecretsManagerHandler.Models;
 
 public static class SecretsProvider
 {
-    private static CoinbaseApiKey? _coinbaseCredentials;
+    private static SigningMetadata? _credentials;
     private static readonly object _lock = new object();
     private static bool _initialized = false;
 
@@ -17,28 +18,18 @@ public static class SecretsProvider
     {
         if (!_initialized)
         {
-            var credentials = await FetchCoinbaseCredentials();
+            var credentials = await FetchCredentials();
             lock (_lock)
             {
-                _coinbaseCredentials = credentials;
+                _credentials = credentials;
                 _initialized = true;
             }
         }
     }
 
-    public static CoinbaseApiKey GetCoinbaseCredentials()
+    private static async Task<SigningMetadata> FetchCredentials()
     {
-        if (!_initialized)
-        {
-            throw new InvalidOperationException("SecretsProvider has not been initialized. Call Initialize() first.");
-        }
-        
-        return _coinbaseCredentials!;
-    }
-
-    private static async Task<CoinbaseApiKey> FetchCoinbaseCredentials()
-    {
-        string secretName = "Coinbase-Test-Key-1";
+        string secretName = "Coinbase-Ed25519";
         string region = "us-east-1";
         IAmazonSecretsManager client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(region));
         GetSecretValueRequest request = new GetSecretValueRequest
@@ -52,7 +43,7 @@ public static class SecretsProvider
             var response = await client.GetSecretValueAsync(request);
             string secretJson = response.SecretString;
             
-            var result = JsonConvert.DeserializeObject<CoinbaseApiKey>(secretJson);
+            var result = JsonConvert.DeserializeObject<SigningMetadata>(secretJson);
             if (result == null)
             {
                 throw new InvalidOperationException("Failed to deserialize Coinbase credentials");
@@ -67,6 +58,21 @@ public static class SecretsProvider
         }
     }
 
+    
+    public static string GetAlgorithmString()
+    {
+        if (!_initialized)
+        {
+            throw new InvalidOperationException("SecretsProvider has not been initialized. Call Initialize() first.");
+        }
+
+        if(_credentials == null){
+            throw new InvalidOperationException("Failed to deserialize Coinbase credentials");
+        }
+
+        return _credentials.Algorithm;
+    }
+
     public static string GetApiKeyName()
     {
         if (!_initialized)
@@ -74,11 +80,11 @@ public static class SecretsProvider
             throw new InvalidOperationException("SecretsProvider has not been initialized. Call Initialize() first.");
         }
 
-        if(_coinbaseCredentials == null){
+        if(_credentials == null){
             throw new InvalidOperationException("Failed to deserialize Coinbase credentials");
         }
 
-        return _coinbaseCredentials.Name;
+        return _credentials.KeyId;
     }
 
     public static string GetSecretKey()
@@ -88,10 +94,19 @@ public static class SecretsProvider
             throw new InvalidOperationException("SecretsProvider has not been initialized. Call Initialize() first.");
         }
 
-        if(_coinbaseCredentials == null){
+        if(_credentials == null){
             throw new InvalidOperationException("Failed to deserialize Coinbase credentials");
         }
 
-        return _coinbaseCredentials.PrivateKey;
+        return _credentials.Algorithm == "ecdsa" ? ExtractPemContent(_credentials.Secret) : _credentials.Secret;
     }
+
+    public static string ExtractPemContent(string pem)
+    {
+        var lines = pem.Split('\n', StringSplitOptions.RemoveEmptyEntries)
+                    .Where(line => !line.StartsWith("-----"))
+                    .ToArray();
+        return string.Concat(lines);
+    }
+
 }
