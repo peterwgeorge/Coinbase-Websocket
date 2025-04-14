@@ -7,10 +7,11 @@ A C# implementation for connecting to the Coinbase Advanced Trading API WebSocke
 This project demonstrates how to:
 
 - Connect to Coinbase's Advanced Trading WebSocket API
-- Authenticate using ECDSA signatures and JWT tokens
+- Authenticate using ECDSA and Ed25519 with JWT tokens
 - Manage WebSocket connection lifecycle
 - Securely store API credentials using AWS Secrets Manager
 - Process real-time market data from Coinbase
+- Use Factory pattern for signature algorithm selection
 
 ## Prerequisites
 
@@ -26,38 +27,53 @@ This project demonstrates how to:
    cd Coinbase-Websocket
    ```
 
-2. Configure AWS Secrets Manager:
-   - Store your Coinbase API credentials JSON in AWS Secrets Manager
-   - Note the name of your secret as you'll need it in the next step
+2. Configure AWS credentials:
+- Make sure you have the AWS CLI installed and configured with credentials that have access to Secrets Manager
+- Alternatively, you can configure the AWS SDK through environment variables:
+  ```
+  export AWS_ACCESS_KEY_ID="your-access-key"
+  export AWS_SECRET_ACCESS_KEY="your-secret-key"
+  export AWS_REGION="your-region"
+  ```
+- For development environments, you can also use the credentials file in `~/.aws/credentials`
 
-3. Update the secret name in `SecretsProvider.cs`:
-   - Locate the `secretName` variable in the file
-   - Change it to match the name of your secret in AWS Secrets Manager
+3. Configure AWS Secrets Manager:
+- Store your Coinbase API credentials in a JSON with this structure:
+  ```json
+  {
+    "algorithm": "ed25519 or ecdsa",
+    "keyId": "your-key-id", 
+    "secret": "your-secret"
+  }
+  ```
+- Note the name of your secret in AWS as you'll need it in the next step
 
-4. Restore NuGet packages:
+4. Update the secret name in `SecretsProvider.cs`:
+- Locate the `secretName` variable in the file
+- Change it to match the name of your secret in AWS Secrets Manager
+
+5. Restore NuGet packages:
    ```
-   dotnet restore
-   ```
 
-5. Build the project:
+6. Build the project:
    ```
    dotnet build
    ```
 
-6. Run the application:
+7. Run the application:
    ```
    dotnet run
    ```
 
 ## Coinbase API Credentials
 
-This project assumes you have created API credentials in Coinbase Advanced Trading and have selected the ECDSA signature algorithm. The expected format of your AWS secret is the JSON provided by Coinbase when you created your API key.
+This project assumes you have created API credentials in Coinbase Advanced Trading and have selected the ECDSA or Ed25519. The expected format of your AWS secret JSON: {algorithm: "ed25519 or ecdsa", keyId: "your-id", secret: "your-secret"}
 
 ## Implementation Details
 
 ### Security Improvements
 
-The original JWT generation code from Coinbase's examples has been modified to use `RandomNumberGenerator` instead of `Random` for improved cryptographic security.
+The original JWT generation code from Coinbase's examples has been modified to use `RandomNumberGenerator` instead of `Random` for improved cryptographic security. We use Jose-JWT with System.Security.Cryptography for EcDSA and manually create a JWT in conjunction with NSec.Cryptography for Ed25519
 
 ### AWS Integration
 
@@ -75,6 +91,7 @@ The project uses the following NuGet packages:
 - Microsoft.IdentityModel.Tokens
 - System.IdentityModel.Tokens.Jwt
 - Jose-JWT
+- NSec.Cryptography
 
 ## Troubleshooting
 

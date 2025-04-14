@@ -1,6 +1,5 @@
 namespace SignatureHandling;
 
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using Jose;
 using SignatureHandling.Interfaces;

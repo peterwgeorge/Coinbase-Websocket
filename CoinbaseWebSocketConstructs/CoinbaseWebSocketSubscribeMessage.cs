@@ -1,9 +1,6 @@
 namespace CoinbaseWebSocketConstructs;
 
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
-using Jose;
 using Newtonsoft.Json;
 using AmazonSecretsManagerHandler;
 using SignatureHandling;

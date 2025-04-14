@@ -29,7 +29,7 @@ public static class SecretsProvider
 
     private static async Task<SigningMetadata> FetchCredentials()
     {
-        string secretName = "Coinbase-Test-Key-1";
+        string secretName = "Coinbase-Ed25519";
         string region = "us-east-1";
         IAmazonSecretsManager client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(region));
         GetSecretValueRequest request = new GetSecretValueRequest
