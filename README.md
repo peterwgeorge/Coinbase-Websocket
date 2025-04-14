@@ -1,6 +1,6 @@
 # Coinbase-Websocket
 
-A C# implementation for connecting to the Coinbase Advanced Trading API WebSocket feed. This project was created as a learning exercise to understand how to properly establish and maintain WebSocket connections with the Coinbase API using ECDSA signature authentication.
+A C# implementation for connecting to the Coinbase Advanced Trading API WebSocket feed. This project was created as a learning exercise to understand how to properly establish and maintain WebSocket connections with the Coinbase API using ECDSA or Ed25519 signature authentication.
 
 ## Overview
 
