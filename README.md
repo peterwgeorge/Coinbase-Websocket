@@ -54,7 +54,8 @@ This project demonstrates how to:
 
 5. Restore NuGet packages:
    ```
-
+   dotnet restore
+   ```
 6. Build the project:
    ```
    dotnet build
