@@ -29,7 +29,7 @@ public static class SecretsProvider
 
     private static async Task<SigningMetadata> FetchCredentials()
     {
-        string secretName = "Coinbase-Ed25519";
+        string secretName = "Coinbase-Test-Key-1";
         string region = "us-east-1";
         IAmazonSecretsManager client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(region));
         GetSecretValueRequest request = new GetSecretValueRequest
@@ -98,15 +98,7 @@ public static class SecretsProvider
             throw new InvalidOperationException("Failed to deserialize Coinbase credentials");
         }
 
-        return _credentials.Algorithm == "ecdsa" ? ExtractPemContent(_credentials.Secret) : _credentials.Secret;
-    }
-
-    public static string ExtractPemContent(string pem)
-    {
-        var lines = pem.Split('\n', StringSplitOptions.RemoveEmptyEntries)
-                    .Where(line => !line.StartsWith("-----"))
-                    .ToArray();
-        return string.Concat(lines);
+        return _credentials.Secret;
     }
 
 }
