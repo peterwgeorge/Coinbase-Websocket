@@ -5,6 +5,7 @@ using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using AmazonSecretsManagerHandler.Models;
 
@@ -13,6 +14,20 @@ public static class SecretsProvider
     private static SigningMetadata? _credentials;
     private static readonly object _lock = new object();
     private static bool _initialized = false;
+
+    private static string? _secretName;
+    private static string? _region;
+    
+    public static void Configure(IConfiguration configuration)
+    {
+        _secretName = configuration["SecretsManager:SecretName"];
+        _region = configuration["SecretsManager:Region"];
+        
+        if (string.IsNullOrEmpty(_secretName) || string.IsNullOrEmpty(_region))
+        {
+            throw new InvalidOperationException("SecretsManager configuration missing. Check appsettings.json.");
+        }
+    }
 
     public static async Task Initialize()
     {
