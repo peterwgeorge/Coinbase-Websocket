@@ -1,3 +1,5 @@
+namespace CoinbaseWebSocketConstructs;
+
 public static class CoinbaseChannelNames{
     public const string Heartbeats = "heartbeats";
     public const string Candles = "candles";

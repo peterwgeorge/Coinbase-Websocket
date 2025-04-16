@@ -90,6 +90,9 @@ The project uses the following NuGet packages:
 - AWSSDK.SecretsManager
 - Newtonsoft.Json
 - Microsoft.IdentityModel.Tokens
+- Microsoft.Extensions.Configuration
+- Microsoft.Extensions.Configuration.Binder
+- Microsoft.Extensions.Configuration.Json
 - System.IdentityModel.Tokens.Jwt
 - Jose-JWT
 - NSec.Cryptography
