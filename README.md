@@ -48,9 +48,9 @@ This project demonstrates how to:
   ```
 - Note the name of your secret in AWS as you'll need it in the next step
 
-4. Update the secret name in `SecretsProvider.cs`:
-- Locate the `secretName` variable in the file
-- Change it to match the name of your secret in AWS Secrets Manager
+4. Update the secret name in `appsettings.json`:
+- Locate the `appsettings.json` file
+- Modify it to match the name of your secret in AWS Secrets Manager and AWS region
 
 5. Restore NuGet packages:
    ```
