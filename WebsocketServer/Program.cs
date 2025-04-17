@@ -1,26 +1,27 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Net.WebSockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Hosting;
-
+﻿
 public class Program
+{
+    public static async Task Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<RelayServer>();
-                    webBuilder.UseUrls("http://localhost:5000");
-                });
+        var host = CreateHostBuilder(args, configuration).Build();
+        await host.RunAsync();
     }
+
+    public static IHostBuilder CreateHostBuilder(string[] args, IConfiguration configuration){
+       return Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<RelayServer>();
+                webBuilder.UseUrls(configuration["RelayServerUrl"]);
+            })
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddHostedService<CoinbaseWebSocketService>();
+            });
+    }
+}

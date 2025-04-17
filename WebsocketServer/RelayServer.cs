@@ -14,6 +14,13 @@
     {
         private static readonly ConcurrentDictionary<string, WebSocket> _clients = new ConcurrentDictionary<string, WebSocket>();
         
+        private readonly IConfiguration _configuration;
+
+        public RelayServer(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public static async Task BroadcastToClientsAsync(string message)
         {
             var buffer = Encoding.UTF8.GetBytes(message);
@@ -61,7 +68,7 @@
 
             // Configure CORS for React app
             app.UseCors(builder => builder
-                .WithOrigins("http://localhost:3000") // React app URL
+                .WithOrigins(_configuration["ReactAppUrl"]) // React app URL
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials());
@@ -98,7 +105,6 @@
         {
             var buffer = new byte[4096];
             
-            // Send a welcome message
             var welcomeMessage = Encoding.UTF8.GetBytes("Connected to Coinbase WebSocket relay");
             await webSocket.SendAsync(
                 new ArraySegment<byte>(welcomeMessage),
@@ -106,7 +112,6 @@
                 true,
                 CancellationToken.None);
 
-            // Keep connection alive until closed
             while (webSocket.State == WebSocketState.Open)
             {
                 try
