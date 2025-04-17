@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonSecretsManagerHandler
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureHandling", "SignatureHandling\SignatureHandling.csproj", "{44ED1708-076E-4EEF-8134-37F5EEDE6360}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebsocketServer", "WebsocketServer\WebsocketServer.csproj", "{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Release|x64.Build.0 = Release|Any CPU
 		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Release|x86.ActiveCfg = Release|Any CPU
 		{44ED1708-076E-4EEF-8134-37F5EEDE6360}.Release|x86.Build.0 = Release|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Debug|x64.Build.0 = Debug|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Debug|x86.Build.0 = Debug|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Release|x64.ActiveCfg = Release|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Release|x64.Build.0 = Release|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Release|x86.ActiveCfg = Release|Any CPU
+		{A4DC32C1-6FC4-4DEA-9491-7E1C07CB5C5F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
