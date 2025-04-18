@@ -67,12 +67,15 @@ This project demonstrates how to:
    cd WebsocketServer
    dotnet run
    ```
-8. Run the React app
+8. Create/set .env file with VITE_RELAY_SERVER_URL=ws://url-you-set-for-WebsocketServer/ws
+
+9. Run the React app
    ```
    cd coinbase-visualizer
    pnpm dev
    ```
-9. Visit the URL provided by Vite after starting the development server.
+
+10. Visit the URL provided by Vite after starting the development server. 
 
 ## Coinbase API Credentials
 
