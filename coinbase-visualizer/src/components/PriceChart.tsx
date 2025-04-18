@@ -13,11 +13,16 @@ export const PriceChart: React.FC = () => {
   const [priceData, setPriceData] = useState<PricePoint[]>([]);
   const [product, setProduct] = useState("BTC-USD");
   const [isConnected, setIsConnected] = useState(false);
-    
+  
+  const productRef = React.useRef(product);
+  useEffect(() => {
+    productRef.current = product;
+  }, [product]);
+
   useEffect(() => {
     webSocketService.connect();
     setIsConnected(webSocketService.isConnected());
-    
+    webSocketService.addDataListener("priceChart", onMessage);
     const statusInterval = setInterval(() => {
       setIsConnected(webSocketService.isConnected());
     }, 5000);
@@ -26,21 +31,9 @@ export const PriceChart: React.FC = () => {
       clearInterval(statusInterval);
       webSocketService.disconnect();
       setIsConnected(false);
+      webSocketService.removeDataListener("priceChart");
     };
   }, []);
-  useEffect(() => {
-
-    webSocketService.addDataListener("priceChart", (data: CoinbaseMessage) => {
-        let tickerEvent = getTickerEvent(data);
-        let price = getPricePoint(data, tickerEvent);
-        updatePriceHistory(price, setPriceData);
-    });
-
-    return () => {
-      webSocketService.removeDataListener("priceChart");
-
-    };
-  }, [product]);
 
   return (
     <div className="price-chart">
@@ -79,21 +72,28 @@ export const PriceChart: React.FC = () => {
     </div>
   );
 
-  function getTickerEvent(data: CoinbaseMessage) : TickerEvent | undefined{
+  function onMessage(data : CoinbaseMessage) : void {
+    const currentProduct = productRef.current;
+    let tickerEvent = getTickerEvent(data, currentProduct);
+    let price = getPricePoint(data, tickerEvent, currentProduct);
+    updatePriceHistory(price, setPriceData);
+  }
+
+  function getTickerEvent(data: CoinbaseMessage, currentProduct: string) : TickerEvent | undefined{
     if (data.channel === "ticker" && data.events && data.events.length > 0) {
       const tickerEvent = data.events.find(event => 
         event.type === "update" && 
         event.tickers && 
-        event.tickers.some(ticker => ticker.product_id === product)
+        event.tickers.some(ticker => ticker.product_id === currentProduct)
       );
 
       return tickerEvent;
     }
   }
 
-  function getPricePoint(data : CoinbaseMessage, tickerEvent : TickerEvent | undefined) : PricePoint | undefined {
+  function getPricePoint(data : CoinbaseMessage, tickerEvent : TickerEvent | undefined, currentProduct: string) : PricePoint | undefined {
     if (tickerEvent) {
-      const ticker = tickerEvent.tickers.find(t => t.product_id === product);
+      const ticker = tickerEvent.tickers.find(t => t.product_id === currentProduct);
       if (ticker) {
         const price = parseFloat(ticker.price);
         const timestamp = new Date(data.timestamp).getTime();
