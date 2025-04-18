@@ -92,9 +92,13 @@ The project leverages AWS Secrets Manager to securely store your Coinbase API cr
 
 The application handles WebSocket connection establishment, authentication, subscription to channels, and processing of incoming messages.
 
-### Future Improvements
+## Future Improvements
 
-- Improved UI, with ability to select different ticker values, multiple exchanges, and color coding
+As this is a learning project, there's a lot that could be improved. I would like to:
+
+- Support multiple exchanges
+- Enhance the UI for better visual appearance and control
+- Migrate from C# to Python
 
 ## Dependencies
 
