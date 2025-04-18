@@ -13,48 +13,32 @@ export const PriceChart: React.FC = () => {
   const [priceData, setPriceData] = useState<PricePoint[]>([]);
   const [product, setProduct] = useState("BTC-USD");
   const [isConnected, setIsConnected] = useState(false);
-
+    
   useEffect(() => {
-    // Connect to WebSocket
     webSocketService.connect();
-    setIsConnected(true);
+    setIsConnected(webSocketService.isConnected());
+    
+    const statusInterval = setInterval(() => {
+      setIsConnected(webSocketService.isConnected());
+    }, 5000);
 
-    // Process incoming data
+    return () => {
+      clearInterval(statusInterval);
+      webSocketService.disconnect();
+      setIsConnected(false);
+    };
+  }, []);
+  useEffect(() => {
+
     webSocketService.addDataListener("priceChart", (data: CoinbaseMessage) => {
-      // Check if this is a ticker message with events
-      if (data.channel === "ticker" && data.events && data.events.length > 0) {
-        // Find a ticker update for our selected product
-        const tickerEvent = data.events.find(event => 
-          event.type === "update" && 
-          event.tickers && 
-          event.tickers.some(ticker => ticker.product_id === product)
-        );
-        
-        if (tickerEvent) {
-          const ticker = tickerEvent.tickers.find(t => t.product_id === product);
-          if (ticker) {
-            const price = parseFloat(ticker.price);
-            const timestamp = new Date(data.timestamp).getTime();
-            
-            if (!isNaN(price)) {
-              setPriceData(prev => {
-                // Keep last 100 points for performance
-                const newData = [...prev, { timestamp, price }];
-                if (newData.length > 100) {
-                  return newData.slice(-100);
-                }
-                return newData;
-              });
-            }
-          }
-        }
-      }
+        let tickerEvent = getTickerEvent(data);
+        let price = getPricePoint(data, tickerEvent);
+        updatePriceHistory(price, setPriceData);
     });
 
     return () => {
       webSocketService.removeDataListener("priceChart");
-      webSocketService.disconnect();
-      setIsConnected(false);
+
     };
   }, [product]);
 
@@ -94,4 +78,45 @@ export const PriceChart: React.FC = () => {
       </div>
     </div>
   );
-};
+
+  function getTickerEvent(data: CoinbaseMessage) : TickerEvent | undefined{
+    if (data.channel === "ticker" && data.events && data.events.length > 0) {
+      const tickerEvent = data.events.find(event => 
+        event.type === "update" && 
+        event.tickers && 
+        event.tickers.some(ticker => ticker.product_id === product)
+      );
+
+      return tickerEvent;
+    }
+  }
+
+  function getPricePoint(data : CoinbaseMessage, tickerEvent : TickerEvent | undefined) : PricePoint | undefined {
+    if (tickerEvent) {
+      const ticker = tickerEvent.tickers.find(t => t.product_id === product);
+      if (ticker) {
+        const price = parseFloat(ticker.price);
+        const timestamp = new Date(data.timestamp).getTime();
+
+        return {timestamp, price};
+      }
+    }
+  }
+
+  function updatePriceHistory(price: PricePoint | undefined, setPriceData: React.Dispatch<React.SetStateAction<PricePoint[]>>) {
+    if (price) {
+      if (!isNaN(price.price)) {
+        setPriceData(prev => {
+          // Keep last 100 points for performance
+          const newData = [...prev, price];
+          if (newData.length > 100) {
+            return newData.slice(-100);
+          }
+          return newData;
+        });
+      }
+    }
+  }
+}
+
+
