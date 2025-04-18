@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { webSocketService } from '../services/webSocketService';
-import {CoinbaseMessage, TickerEvent, CoinbaseTicker} from '../types/coinbase'
+import {CoinbaseMessage, TickerEvent} from '../types/coinbase'
 
 interface PricePoint {
   timestamp: number;
@@ -63,8 +63,9 @@ export const PriceChart: React.FC = () => {
               type="monotone"
               dataKey="price"
               stroke="#8884d8"
-              dot={false}
+              dot={true}
               isAnimationActive={false}
+              name="Coinbase"
             />
           </LineChart>
         </ResponsiveContainer>
