@@ -66,9 +66,8 @@
                 app.UseDeveloperExceptionPage();
             }
 
-            // Configure CORS for React app
             app.UseCors(builder => builder
-                .WithOrigins(_configuration["ReactAppUrl"]) // React app URL
+                .WithOrigins(_configuration["ReactAppUrl"])
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials());

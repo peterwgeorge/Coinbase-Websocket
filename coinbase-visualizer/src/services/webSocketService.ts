@@ -9,7 +9,7 @@ export class WebSocketService {
     }
   
     public connect(): void {
-      if (this.socket?.readyState === WebSocket.OPEN) return;
+      if (this.isConnected()) return;
       
       this.socket = new WebSocket(this.url);
       
@@ -36,6 +36,10 @@ export class WebSocketService {
         console.error('WebSocket error:', error);
         this.socket?.close();
       };
+    }
+
+    public isConnected(): boolean {
+      return this.socket?.readyState === WebSocket.OPEN;
     }
     
     public disconnect(): void {
