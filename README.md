@@ -72,7 +72,7 @@ This project demonstrates how to:
    cd coinbase-visualizer
    pnpm dev
    ```
-9. Visit the URL provided by Vite after starting the development server..
+9. Visit the URL provided by Vite after starting the development server.
 
 ## Coinbase API Credentials
 
