@@ -2,39 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { webSocketService } from '../services/webSocketService';
+import {CoinbaseMessage, TickerEvent, CoinbaseTicker} from '../types/coinbase'
 
 interface PricePoint {
   timestamp: number;
   price: number;
-}
-
-interface CoinbaseTicker {
-  type: string;
-  product_id: string;
-  price: string;
-  volume_24_h: string;
-  low_24_h: string;
-  high_24_h: string;
-  low_52_w: string;
-  high_52_w: string;
-  price_percent_chg_24_h: string;
-  best_bid: string;
-  best_ask: string;
-  best_bid_quantity: string;
-  best_ask_quantity: string;
-}
-
-interface TickerEvent {
-  type: string;
-  tickers: CoinbaseTicker[];
-}
-
-interface CoinbaseMessage {
-  channel: string;
-  client_id: string;
-  timestamp: string;
-  sequence_num: number;
-  events: TickerEvent[];
 }
 
 export const PriceChart: React.FC = () => {
@@ -93,8 +65,6 @@ export const PriceChart: React.FC = () => {
         <p>Connection Status: {isConnected ? 'Connected' : 'Disconnected'}</p>
         <select value={product} onChange={e => setProduct(e.target.value)}>
           <option value="BTC-USD">BTC-USD</option>
-          <option value="ETH-USD">ETH-USD</option>
-          <option value="SOL-USD">SOL-USD</option>
         </select>
       </div>
       <div style={{ width: '100%', height: 400 }}>
