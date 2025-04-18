@@ -1,6 +1,6 @@
 # Coinbase-Websocket
 
-A C# implementation for connecting to the Coinbase Advanced Trading API WebSocket feed. This project was created as a learning exercise to understand how to properly establish and maintain WebSocket connections with the Coinbase API using ECDSA or Ed25519 signature authentication.
+A C# implementation for connecting to the Coinbase Advanced Trading API WebSocket feed and visualizing the data with React. This project was created as a learning exercise to understand how to properly establish and maintain WebSocket connections with the Coinbase API using ECDSA or Ed25519 signature authentication.
 
 ## Overview
 
@@ -12,6 +12,7 @@ This project demonstrates how to:
 - Securely store API credentials using AWS Secrets Manager
 - Process real-time market data from Coinbase
 - Use Factory pattern for signature algorithm selection
+- Use Dependency Injection in .NET
 
 ## Prerequisites
 
@@ -48,9 +49,9 @@ This project demonstrates how to:
   ```
 - Note the name of your secret in AWS as you'll need it in the next step
 
-4. Update the secret name in `appsettings.json`:
-- Locate the `appsettings.json` file
-- Modify it to match the name of your secret in AWS Secrets Manager and AWS region
+4. Modify `appsettings.json`
+   - Locate the `appsettings.json` file
+   - Modify it to match the name of your secret in AWS Secrets Manager, AWS region, and desired URLs for WebSocket server and React App.
 
 5. Restore NuGet packages:
    ```
@@ -61,14 +62,21 @@ This project demonstrates how to:
    dotnet build
    ```
 
-7. Run the application:
+7. Run the WebsocketServer application:
    ```
+   cd WebsocketServer
    dotnet run
    ```
+8. Run the React app
+   ```
+   cd coinbase-visualizer
+   pnpm dev
+   ```
+9. Visit the URL provided by Vite after starting the development server..
 
 ## Coinbase API Credentials
 
-This project assumes you have created API credentials in Coinbase Advanced Trading and have selected the ECDSA or Ed25519. The expected format of your AWS secret JSON: {algorithm: "ed25519 or ecdsa", keyId: "your-id", secret: "your-secret"}
+This project assumes you have created API credentials in Coinbase Advanced Trading and and have selected either ECDSA or Ed25519 as the signing algorithm when creating your API key. Refer to the Setup section for the expected JSON format for storage in AWS Secrets Manager.
 
 ## Implementation Details
 
@@ -83,6 +91,10 @@ The project leverages AWS Secrets Manager to securely store your Coinbase API cr
 ### WebSocket Connection
 
 The application handles WebSocket connection establishment, authentication, subscription to channels, and processing of incoming messages.
+
+### Future Improvements
+
+- Improved UI, with ability to select different ticker values, multiple exchanges, and color coding
 
 ## Dependencies
 
