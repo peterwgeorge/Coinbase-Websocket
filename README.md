@@ -118,7 +118,8 @@ The project uses the following NuGet packages:
 - If you encounter connection issues, verify that your API credentials are correctly stored in AWS Secrets Manager
 - Ensure the secret name in `SecretsProvider.cs` matches your AWS secret name
 - Check that your Coinbase API key has the appropriate permissions
-- Ensure your Coinbase API key uses the ECDSA algorithm 
+- Ensure your Coinbase API key uses the ECDSA algorithm
+- If you are not getting data in the React app, ensure that the ReactAppUrl in the appsettings.json matches what was provided by Vite. 
 
 ## Disclaimer
 
