@@ -3,7 +3,7 @@ using System.Net.WebSockets;
 using Newtonsoft.Json;
 using CoinbaseWebSocketConstructs;
 
-public static class ConnectionHandler{
+public static class CoinbaseConnectionHandler{
     public static async Task Connect(ClientWebSocket socket, string feed){
         Uri uri = new Uri(feed);
         await socket.ConnectAsync(uri, CancellationToken.None);
@@ -33,6 +33,8 @@ public static class ConnectionHandler{
         {
             string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
             Console.WriteLine("Received: " + message);
+
+             await RelayServer.BroadcastToClientsAsync(message);
         }
     }
 }
