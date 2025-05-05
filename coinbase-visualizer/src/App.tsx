@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Coinbase Market Data Visualizer</h1>
+        <h1>Crypto Exchange Market Data Visualizer</h1>
       </header>
       <main>
         <PriceChart />

@@ -76,4 +76,4 @@ export class WebSocketService {
   }
   
   // Create an instance with your local WebSocket URL
-  export const webSocketService = new WebSocketService('ws://localhost:5000/ws');
+  export const webSocketService = new WebSocketService(import.meta.env.VITE_RELAY_SERVER_URL);
