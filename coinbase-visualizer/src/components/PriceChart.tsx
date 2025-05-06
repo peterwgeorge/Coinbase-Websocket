@@ -22,15 +22,12 @@ export const PriceChart: React.FC = () => {
   }, [product]);
 
   useEffect(() => {
-    webSocketService.connect();
-    setIsConnected(webSocketService.isConnected());
+    connectAndListen();
     webSocketService.addDataListener("priceChart", onMessage);
-    const statusInterval = setInterval(() => {
-      setIsConnected(webSocketService.isConnected());
-    }, 5000);
+    const intervalId = setInterval(handleStatusInterval, 5000);
 
     return () => {
-      clearInterval(statusInterval);
+      clearInterval(intervalId);
       webSocketService.disconnect();
       setIsConnected(false);
       webSocketService.removeDataListener("priceChart");
@@ -74,6 +71,21 @@ export const PriceChart: React.FC = () => {
       </div>
     </div>
   );
+
+  function connectAndListen() {
+    webSocketService.connect();
+    setIsConnected(webSocketService.isConnected());
+  }
+
+  function handleStatusInterval() {
+    if (!webSocketService.isConnected()) {
+      console.log("Lost connection. Reconnecting...");
+      webSocketService.disconnect();
+      connectAndListen();
+    }
+
+    setIsConnected(webSocketService.isConnected());
+  }
 
   function onMessage(data : CoinbaseMessage) : void {
     const currentProduct = productRef.current;

@@ -1,7 +1,6 @@
 export class WebSocketService {
     private socket: WebSocket | null = null;
     private listeners: Map<string, (data: any) => void> = new Map();
-    private reconnectTimeout: NodeJS.Timeout | null = null;
     private url: string;
   
     constructor(url: string) {
@@ -15,11 +14,14 @@ export class WebSocketService {
       
       this.socket.onopen = () => {
         console.log('WebSocket connected');
-        this.clearReconnectTimeout();
       };
       
       this.socket.onmessage = (event) => {
         try {
+
+          if(event.data === "Connected to Coinbase WebSocket relay")
+            return;
+          
           const data = JSON.parse(event.data);
           this.listeners.forEach(callback => callback(data));
         } catch (error) {
@@ -27,10 +29,10 @@ export class WebSocketService {
         }
       };
       
-      this.socket.onclose = () => {
-        console.log('WebSocket disconnected, reconnecting...');
-        this.scheduleReconnect();
+      this.socket.onclose = (event) => {
+        console.log(`WebSocket disconnected. Code: ${event.code}, Reason: ${event.reason}`);
       };
+      
       
       this.socket.onerror = (error) => {
         console.error('WebSocket error:', error);
@@ -47,23 +49,6 @@ export class WebSocketService {
         this.socket.close();
         this.socket = null;
       }
-      
-      this.clearReconnectTimeout();
-    }
-    
-    private scheduleReconnect(): void {
-      if (!this.reconnectTimeout) {
-        this.reconnectTimeout = setTimeout(() => {
-          this.connect();
-        }, 3000);
-      }
-    }
-
-    private clearReconnectTimeout(): void {
-        if (this.reconnectTimeout) {
-          clearTimeout(this.reconnectTimeout);
-          this.reconnectTimeout = null;
-        }
     }
     
     public addDataListener(id: string, callback: (data: any) => void): void {
