@@ -14,6 +14,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
     <PackageReference Include="System.Net.WebSockets" Version="4.3.0" />
     <ProjectReference Include="../CoinbaseWebSocketConstructs/CoinbaseWebSocketConstructs.csproj" />
+    <ProjectReference Include="../BinanceWebSocketConstructs/BinanceWebSocketConstructs.csproj" />
     <ProjectReference Include="../AmazonSecretsManagerHandler/AmazonSecretsManagerHandler.csproj" />
   </ItemGroup>
   <ItemGroup>
