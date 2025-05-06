@@ -10,7 +10,7 @@
             "name": "Launch React App in Brave",
             "runtimeExecutable": "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
             "url": "http://localhost:5173",  
-            "webRoot": "${workspaceFolder}/coinbase-visualizer/src",
+            "webRoot": "${workspaceFolder}/frontend/src",
             "sourceMaps": true,
             "smartStep": true
           },
@@ -20,7 +20,7 @@
             "name": "Start React App",
             "runtimeExecutable": "pnpm",
             "runtimeArgs": ["run", "dev"],  
-            "cwd": "${workspaceFolder}/coinbase-visualizer",
+            "cwd": "${workspaceFolder}/frontend",
             "console": "integratedTerminal"
           }
     ]
