@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { webSocketService } from '../services/webSocketService';
-import {CoinbaseMessage, TickerEvent} from '../types/coinbase'
+import { CoinbaseMessage, TickerEvent } from '../types/coinbase'
 import ConnectionStatus from './ConnectionStatus';
-
+import PriceChartLegend from './PriceChartLegend';
 
 interface PricePoint {
   timestamp: number;
@@ -15,7 +15,7 @@ export const PriceChart: React.FC = () => {
   const [priceData, setPriceData] = useState<PricePoint[]>([]);
   const [product, setProduct] = useState("BTC-USD");
   const [isConnected, setIsConnected] = useState(false);
-  
+
   const productRef = React.useRef(product);
   useEffect(() => {
     productRef.current = product;
@@ -36,40 +36,40 @@ export const PriceChart: React.FC = () => {
 
   return (
     <div className="price-chart">
-      <h2>{product} Price Chart</h2>
       <div>
-      <ConnectionStatus isConnected={isConnected}/>
-        <select value={product} onChange={e => setProduct(e.target.value)}>
-          <option value="BTC-USD">BTC-USD</option>
-        </select>
+        <ConnectionStatus isConnected={isConnected} />
       </div>
-      <div style={{ width: '100%', height: 400 }}>
-        <ResponsiveContainer>
-          <LineChart data={priceData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="timestamp"
-              domain={['auto', 'auto']}
-              tickFormatter={(unixTime) => new Date(unixTime).toLocaleTimeString()}
-            />
-            <YAxis domain={['auto', 'auto']} />
-            <Tooltip
-              labelFormatter={(label) => new Date(label).toLocaleString()}
-              formatter={(value) => [`$${value}`, 'Price']}
-            />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="price"
-              stroke="#8884d8"
-              dot={true}
-              isAnimationActive={false}
-              name="Coinbase"
-            />
-          </LineChart>
-        </ResponsiveContainer>
+
+      <div style={{ display: 'flex', height: 400 }}>
+        <div style={{ flex: 1 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={priceData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="timestamp"
+                domain={['auto', 'auto']}
+                tickFormatter={(unixTime) => new Date(unixTime).toLocaleTimeString()}
+              />
+              <YAxis domain={['auto', 'auto']} />
+              <Tooltip
+                labelFormatter={(label) => new Date(label).toLocaleString()}
+                formatter={(value) => [`$${value}`, 'Price']}
+              />
+              <Line
+                type="monotone"
+                dataKey="price"
+                stroke="#8884d8"
+                dot={true}
+                isAnimationActive={false}
+                name="Coinbase"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+        <PriceChartLegend/>
       </div>
     </div>
+
   );
 
   function connectAndListen() {
@@ -87,18 +87,18 @@ export const PriceChart: React.FC = () => {
     setIsConnected(webSocketService.isConnected());
   }
 
-  function onMessage(data : CoinbaseMessage) : void {
+  function onMessage(data: CoinbaseMessage): void {
     const currentProduct = productRef.current;
     let tickerEvent = getTickerEvent(data, currentProduct);
     let price = getPricePoint(data, tickerEvent, currentProduct);
     updatePriceHistory(price, setPriceData);
   }
 
-  function getTickerEvent(data: CoinbaseMessage, currentProduct: string) : TickerEvent | undefined{
+  function getTickerEvent(data: CoinbaseMessage, currentProduct: string): TickerEvent | undefined {
     if (data.channel === "ticker" && data.events && data.events.length > 0) {
-      const tickerEvent = data.events.find(event => 
-        event.type === "update" && 
-        event.tickers && 
+      const tickerEvent = data.events.find(event =>
+        event.type === "update" &&
+        event.tickers &&
         event.tickers.some(ticker => ticker.product_id === currentProduct)
       );
 
@@ -106,14 +106,14 @@ export const PriceChart: React.FC = () => {
     }
   }
 
-  function getPricePoint(data : CoinbaseMessage, tickerEvent : TickerEvent | undefined, currentProduct: string) : PricePoint | undefined {
+  function getPricePoint(data: CoinbaseMessage, tickerEvent: TickerEvent | undefined, currentProduct: string): PricePoint | undefined {
     if (tickerEvent) {
       const ticker = tickerEvent.tickers.find(t => t.product_id === currentProduct);
       if (ticker) {
         const price = parseFloat(ticker.price);
         const timestamp = new Date(data.timestamp).getTime();
 
-        return {timestamp, price};
+        return { timestamp, price };
       }
     }
   }
@@ -122,10 +122,10 @@ export const PriceChart: React.FC = () => {
     if (price) {
       if (!isNaN(price.price)) {
         setPriceData(prev => {
-          // Keep last 100 points for performance
+          // Keep last 50 points for performance
           const newData = [...prev, price];
-          if (newData.length > 100) {
-            return newData.slice(-100);
+          if (newData.length > 50) {
+            return newData.slice(-50);
           }
           return newData;
         });
