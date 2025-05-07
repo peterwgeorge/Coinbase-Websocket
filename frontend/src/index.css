@@ -1,5 +1,5 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -28,6 +28,36 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+/* Headings and Typography Utilities */
+.heading-xl {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.heading-lg {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.heading-md {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.text-body {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.text-bold {
+  font-weight: 700;
+}
+
+.text-italic {
+  font-style: italic;
 }
 
 h1 {
