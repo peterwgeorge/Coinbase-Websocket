@@ -71,7 +71,7 @@ This project demonstrates how to:
 
 9. Run the React app
    ```
-   cd coinbase-visualizer
+   cd frontend
    pnpm dev
    ```
 
