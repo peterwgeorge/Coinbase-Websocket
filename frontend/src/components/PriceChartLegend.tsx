@@ -1,5 +1,6 @@
 import CoinbaseLogo from '../assets/icons/coinbase.svg';
 import BinanceLogo from '../assets/icons/binance.png';
+import KrakenLogo from '../assets/icons/kraken.png';
 
 export default function PriceChartLegend() {
   return (
@@ -13,7 +14,7 @@ export default function PriceChartLegend() {
           lineHeight: 1,
         }}
       >
-        <span style={{ color: '#8884d8', fontSize: '0.75rem' }}>⬤</span>
+        <span style={{ color: '#0052FF', fontSize: '0.75rem' }}>⬤</span>
         <img
           src={CoinbaseLogo}
           alt="Coinbase"
@@ -33,6 +34,22 @@ export default function PriceChartLegend() {
         <img
           src={BinanceLogo}
           alt="Binance"
+          style={{ height: '1.2rem', display: 'inline-block' }}
+        />
+      </div>
+      <div
+        className="text-body"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          lineHeight: 1,
+        }}
+      >
+        <span style={{ color: '#5841D8', fontSize: '0.75rem' }}>⬤</span>
+        <img
+          src={KrakenLogo}
+          alt="Kraken"
           style={{ height: '1.2rem', display: 'inline-block' }}
         />
       </div>
