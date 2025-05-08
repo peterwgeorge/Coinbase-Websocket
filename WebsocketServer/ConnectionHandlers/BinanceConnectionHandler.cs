@@ -1,6 +1,9 @@
+namespace WebsocketServer.ConnectionHandlers;
+
 using System.Text;
 using System.Net.WebSockets;
 using Newtonsoft.Json;
+using BinanceWebSocketConstructs;
 
 public static class BinanceConnectionHandler{
     public static async Task Connect(ClientWebSocket socket, string feed){
@@ -11,21 +14,29 @@ public static class BinanceConnectionHandler{
 
     public static async Task Subscribe(ClientWebSocket socket, string channel, string[] product_ids)
     {
-        Func<Task> task = async () => {
-            await Task.Delay(500);
-            Console.WriteLine("Subscribe not implemented yet.");
-        };
+        BinanceMarketDataRequest request = new(channel, product_ids);
+        string json = JsonConvert.SerializeObject(request);
+        Console.WriteLine("Sending Binance request message:");
+        Console.WriteLine(json);
 
-        await task();
+        var bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(json));
+        await socket.SendAsync(bytesToSend, WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
     public static async Task Receive(ClientWebSocket socket, byte[] buffer)
     {
-        Func<Task> task = async () => {
-            await Task.Delay(500);
-            Console.WriteLine("Receive not implemented yet.");
-        };
-        
-        await task();
+        var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+        if (result.MessageType == WebSocketMessageType.Close)
+        {
+            Console.WriteLine("Binance WebSocket closed.");
+            await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+        }
+        else
+        {
+            string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+            Console.WriteLine("Received from Binance: " + message);
+
+            await RelayServer.BroadcastToClientsAsync(message);
+        }
     }
 }

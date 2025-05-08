@@ -1,31 +1,31 @@
-# Coinbase-Websocket
+# CryptoExchange-Websocket
 
-A C# implementation for connecting to the Coinbase Advanced Trading API WebSocket feed and visualizing the data with React. This project was created as a learning exercise to understand how to properly establish and maintain WebSocket connections with the Coinbase API using ECDSA or Ed25519 signature authentication.
+A C# implementation for connecting to cryptocurrency exchange WebSocket APIs—starting with Coinbase and Binance—and visualizing real-time market data in a React frontend. This project was built as a learning tool to explore WebSocket communication, secure API integration, and data visualization across multiple crypto exchanges.
 
 ## Overview
 
 This project demonstrates how to:
 
-- Connect to Coinbase's Advanced Trading WebSocket API
-- Authenticate using ECDSA and Ed25519 with JWT tokens
-- Manage WebSocket connection lifecycle
+- Connect to WebSocket APIs from exchanges like Coinbase and Binance
+- Authenticate using ECDSA and Ed25519 signatures (Coinbase only)
+- Manage WebSocket connection lifecycles for multiple exchanges
 - Securely store API credentials using AWS Secrets Manager
-- Process real-time market data from Coinbase
-- Use Factory pattern for signature algorithm selection
-- Use Dependency Injection in .NET
+- Normalize and display live price data across exchanges in a shared UI
+- Use the Factory Pattern to support multiple authentication mechanisms
+- Apply Dependency Injection principles in a .NET environment
 
 ## Prerequisites
 
 - .NET SDK (compatible with the project version)
 - AWS account with Secrets Manager configured
-- Coinbase Advanced Trading API credentials (saved in AWS Secrets Manager)
+- Exchange API credentials (e.g., Coinbase, Binance) stored in AWS Secrets Manager
 
 ## Setup
 
 1. Clone the repository:
    ```
-   git clone https://github.com/peterwgeorge/Coinbase-Websocket.git
-   cd Coinbase-Websocket
+   git clone https://github.com/peterwgeorge/CryptoExchange-Websocket.git
+   cd CryptoExchange-Websocket
    ```
 
 2. Configure AWS credentials:
@@ -77,9 +77,9 @@ This project demonstrates how to:
 
 10. Visit the URL provided by Vite after starting the development server. 
 
-## Coinbase API Credentials
+## Exchange Credentials
 
-This project assumes you have created API credentials in Coinbase Advanced Trading and and have selected either ECDSA or Ed25519 as the signing algorithm when creating your API key. Refer to the Setup section for the expected JSON format for storage in AWS Secrets Manager.
+Currently, authentication and signed requests are only required for Coinbase. Binance connections use unauthenticated public feeds. More exchanges will be added with support for their respective auth mechanisms.
 
 ## Implementation Details
 
@@ -97,36 +97,34 @@ The application handles WebSocket connection establishment, authentication, subs
 
 ## Future Improvements
 
-As this is a learning project, there's a lot that could be improved. I would like to:
-
-- Support multiple exchanges
-- Enhance the UI for better visual appearance and control
-- Migrate from C# to Python
+- Add support for Kraken, Gemini, and other exchanges
+- Extend WebSocket subscription options (order books, trades, etc.)
+- Improve frontend UI/UX
+- Add price smoothing and anomaly detection
+- Evaluate migrating backend from C# to Python or Rust
 
 ## Dependencies
 
-The project uses the following NuGet packages:
-- AWSSDK.SecretsManager
-- Newtonsoft.Json
-- Microsoft.IdentityModel.Tokens
-- Microsoft.Extensions.Configuration
-- Microsoft.Extensions.Configuration.Binder
-- Microsoft.Extensions.Configuration.Json
-- System.IdentityModel.Tokens.Jwt
-- Jose-JWT
-- NSec.Cryptography
+.NET
+ - AWSSDK.SecretsManager
+ - Newtonsoft.Json
+ - Microsoft.IdentityModel.Tokens
+ - System.IdentityModel.Tokens.Jwt
+ - Jose-JWT
+ - NSec.Cryptography
+
+Frontend
+ - React
+ - Vite
+ - Recharts
 
 ## Troubleshooting
 
-- If you encounter connection issues, verify that your API credentials are correctly stored in AWS Secrets Manager
-- Ensure the secret name in `SecretsProvider.cs` matches your AWS secret name
-- Check that your Coinbase API key has the appropriate permissions
-- Ensure your Coinbase API key uses the ECDSA algorithm
-- If you are not getting data in the React app, ensure that the ReactAppUrl in the appsettings.json matches what was provided by Vite. 
+- Ensure your AWS secret names and credentials are correct.
+- Confirm that your API key matches the expected algorithm and has necessary permissions.
+- Make sure the WebSocket server is reachable from the frontend.
+- Check CORS and proxy settings if using a non-local environment.
 
 ## Disclaimer
 
-This project is for educational purposes. It is not officially affiliated with Coinbase. Always follow Coinbase's API usage guidelines and terms of service.
-
-
-*Note: This project was created as a learning exercise to understand the Coinbase Advanced Trading API WebSocket implementation.*
+This project is for educational purposes only and is not affiliated with any of the supported exchanges. Please review and comply with each exchange’s API usage policies.

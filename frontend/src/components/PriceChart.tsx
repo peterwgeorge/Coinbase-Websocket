@@ -1,25 +1,23 @@
 // src/components/PriceChart.tsx
 import React, { useEffect, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { webSocketService } from '../services/webSocketService';
-import { CoinbaseMessage, TickerEvent } from '../types/coinbase'
+import { createAlignedPriceSeries } from '../utils/dataAlignment';
+import { retainRecentPrices } from '../utils/history';
+import { extractPricePoint } from '../utils/priceParsers';
+import { PricePoint } from '../types/price-point';
 import ConnectionStatus from './ConnectionStatus';
 import PriceChartLegend from './PriceChartLegend';
 
-interface PricePoint {
-  timestamp: number;
-  price: number;
-}
-
 export const PriceChart: React.FC = () => {
-  const [priceData, setPriceData] = useState<PricePoint[]>([]);
-  const [product, setProduct] = useState("BTC-USD");
   const [isConnected, setIsConnected] = useState(false);
+  const [coinbaseData, setCoinbaseData] = useState<PricePoint[]>([]);
+  const [binanceData, setBinanceData] = useState<PricePoint[]>([]);
 
-  const productRef = React.useRef(product);
-  useEffect(() => {
-    productRef.current = product;
-  }, [product]);
+  const combinedData = React.useMemo(() => {
+    return createAlignedPriceSeries(coinbaseData, binanceData);
+  }, [coinbaseData, binanceData]);
+
 
   useEffect(() => {
     connectAndListen();
@@ -43,7 +41,7 @@ export const PriceChart: React.FC = () => {
       <div style={{ display: 'flex', height: 400 }}>
         <div style={{ flex: 1 }}>
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={priceData}>
+            <LineChart data={combinedData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="timestamp"
@@ -57,16 +55,24 @@ export const PriceChart: React.FC = () => {
               />
               <Line
                 type="monotone"
-                dataKey="price"
+                dataKey="coinbase"
                 stroke="#8884d8"
                 dot={true}
                 isAnimationActive={false}
                 name="Coinbase"
               />
+              <Line
+                type="monotone"
+                dataKey="binance"
+                stroke="#f7931a"
+                dot={true}
+                isAnimationActive={false}
+                name="Binance"
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>
-        <PriceChartLegend/>
+        <PriceChartLegend />
       </div>
     </div>
 
@@ -87,51 +93,34 @@ export const PriceChart: React.FC = () => {
     setIsConnected(webSocketService.isConnected());
   }
 
-  function onMessage(data: CoinbaseMessage): void {
-    const currentProduct = productRef.current;
-    let tickerEvent = getTickerEvent(data, currentProduct);
-    let price = getPricePoint(data, tickerEvent, currentProduct);
-    updatePriceHistory(price, setPriceData);
-  }
+  function onMessage(data: any): void {
+    const parsed = extractPricePoint(data);
+    if (!parsed)
+      return;
 
-  function getTickerEvent(data: CoinbaseMessage, currentProduct: string): TickerEvent | undefined {
-    if (data.channel === "ticker" && data.events && data.events.length > 0) {
-      const tickerEvent = data.events.find(event =>
-        event.type === "update" &&
-        event.tickers &&
-        event.tickers.some(ticker => ticker.product_id === currentProduct)
-      );
-
-      return tickerEvent;
+    const setter = getHistoryUpdater(parsed.source);
+    if (setter) {
+      updatePriceHistory(parsed, setter);
     }
   }
 
-  function getPricePoint(data: CoinbaseMessage, tickerEvent: TickerEvent | undefined, currentProduct: string): PricePoint | undefined {
-    if (tickerEvent) {
-      const ticker = tickerEvent.tickers.find(t => t.product_id === currentProduct);
-      if (ticker) {
-        const price = parseFloat(ticker.price);
-        const timestamp = new Date(data.timestamp).getTime();
-
-        return { timestamp, price };
-      }
+  function getHistoryUpdater(source: string): React.Dispatch<React.SetStateAction<PricePoint[]>> | undefined {
+    switch (source) {
+      case 'coinbase': return setCoinbaseData;
+      case 'binance': return setBinanceData;
+      default: return undefined;
+    }
+  }
+  
+  function updatePriceHistory(
+    price: PricePoint | undefined,
+    setPriceData: React.Dispatch<React.SetStateAction<PricePoint[]>>
+  ) {
+    if (price && !isNaN(price.price)) {
+      setPriceData(prev => retainRecentPrices(prev, price, 30_000));
     }
   }
 
-  function updatePriceHistory(price: PricePoint | undefined, setPriceData: React.Dispatch<React.SetStateAction<PricePoint[]>>) {
-    if (price) {
-      if (!isNaN(price.price)) {
-        setPriceData(prev => {
-          // Keep last 50 points for performance
-          const newData = [...prev, price];
-          if (newData.length > 50) {
-            return newData.slice(-50);
-          }
-          return newData;
-        });
-      }
-    }
-  }
 }
 
 

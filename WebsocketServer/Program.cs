@@ -21,6 +21,7 @@
             .ConfigureServices((hostContext, services) =>
             {
                 services.AddHostedService<CoinbaseWebSocketService>();
+                services.AddHostedService<BinanceWebSocketService>();
             });
     }
 }
