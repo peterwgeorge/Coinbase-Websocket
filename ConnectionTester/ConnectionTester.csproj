@@ -13,9 +13,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
     <PackageReference Include="System.Net.WebSockets" Version="4.3.0" />
-    <ProjectReference Include="../CryptoExchangeConstructs/Coinbase/CoinbaseWebSocketConstructs/CoinbaseWebSocketConstructs.csproj" />
-    <ProjectReference Include="../CryptoExchangeConstructs/Binance/BinanceWebSocketConstructs/BinanceWebSocketConstructs.csproj" />
     <ProjectReference Include="../AmazonSecretsManagerHandler/AmazonSecretsManagerHandler.csproj" />
+    <ProjectReference Include="../CryptoExchangeConstructs/CryptoExchangeConstructs.csproj" />
     <ProjectReference Include="../WebsocketServer/WebsocketServer.csproj"/>
   </ItemGroup>
 

@@ -56,7 +56,7 @@ export const PriceChart: React.FC = () => {
               <Line
                 type="monotone"
                 dataKey="coinbase"
-                stroke="#8884d8"
+                stroke="#0052FF"
                 dot={true}
                 isAnimationActive={false}
                 name="Coinbase"

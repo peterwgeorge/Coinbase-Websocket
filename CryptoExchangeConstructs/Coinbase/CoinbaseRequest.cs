@@ -1,12 +1,13 @@
-namespace CoinbaseWebSocketConstructs;
+namespace CryptoExchangeConstructs.Coinbase;
 
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using AmazonSecretsManagerHandler;
 using SignatureHandling;
 using SignatureHandling.Interfaces;
+using CryptoExchangeConstructs.Common;
 
-public class CoinbaseWebSocketSubscribeMessage
+public class CoinbaseRequest : IExchangeRequest
 {
     [JsonProperty(PropertyName = "type")]
     public string Type { get; set; }
@@ -20,7 +21,7 @@ public class CoinbaseWebSocketSubscribeMessage
     [JsonProperty(PropertyName = "jwt")]
     public string Jwt { get; private set; }
     
-    public CoinbaseWebSocketSubscribeMessage(string type, string channel, string[] product_ids)
+    public CoinbaseRequest(string type, string channel, string[] product_ids)
     {
         Type = type;
         Channel = channel;
