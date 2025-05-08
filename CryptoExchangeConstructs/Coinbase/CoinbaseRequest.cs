@@ -5,8 +5,9 @@ using Newtonsoft.Json;
 using AmazonSecretsManagerHandler;
 using SignatureHandling;
 using SignatureHandling.Interfaces;
+using CryptoExchangeConstructs.Common;
 
-public class CoinbaseRequest
+public class CoinbaseRequest : IExchangeRequest
 {
     [JsonProperty(PropertyName = "type")]
     public string Type { get; set; }

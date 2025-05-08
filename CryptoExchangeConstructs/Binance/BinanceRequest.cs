@@ -1,8 +1,10 @@
 namespace CryptoExchangeConstructs.Binance;
 
+using CryptoExchangeConstructs.Common;
 using Newtonsoft.Json;
 
-public class BinanceRequest{
+public class BinanceRequest : IExchangeRequest
+{
     [JsonProperty(PropertyName = "id")]
     public string Id;
 

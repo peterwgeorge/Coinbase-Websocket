@@ -4,17 +4,17 @@ using CryptoExchangeConstructs.Binance;
 using CryptoExchangeConstructs.Coinbase;
 using CryptoExchangeConstructs.Kraken;
 
-public static class RequestFactory
+public static class FeedFactory
 {
-    public static IExchangeRequest CreateSubscribeRequest(string exchange, string channel, string[] symbols)
+    public static string GetExchangeFeed(string exchange)
     {
         switch(exchange.ToLower()){
             case "coinbase":
-                return new CoinbaseRequest(MethodTypes.Subscribe, channel, symbols);
+                return CoinbaseMarketDataFeeds.MarketDataEndpoint;
             case "kraken":
-                return new KrakenRequest(MethodTypes.Subscribe, channel,  symbols);
+                return KrakenMarketDataFeeds.Endpoint;
             case "binance":
-                return new BinanceRequest(MethodTypes.Subscribe.ToUpper(), symbols);
+                return BinanceMarketDataFeeds.BaseEndpoint;
             default:
                 throw new ArgumentException($"{exchange} not supported.");
         }

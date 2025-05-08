@@ -97,7 +97,7 @@
         {
             var buffer = new byte[4096];
             
-            var welcomeMessage = Encoding.UTF8.GetBytes("Connected to Coinbase WebSocket relay");
+            var welcomeMessage = Encoding.UTF8.GetBytes("Connected to CryptoExchange WebSocket relay");
             await webSocket.SendAsync(
                 new ArraySegment<byte>(welcomeMessage),
                 WebSocketMessageType.Text,
