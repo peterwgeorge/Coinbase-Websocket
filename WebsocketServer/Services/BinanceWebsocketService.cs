@@ -1,5 +1,5 @@
-using AmazonSecretsManagerHandler;
 using BinanceWebSocketConstructs;
+using WebsocketServer.ConnectionHandlers;
 using System.Net.WebSockets;
 
 public class BinanceWebSocketService : BackgroundService
@@ -15,14 +15,19 @@ public class BinanceWebSocketService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        SecretsProvider.Configure(_configuration);
-        await SecretsProvider.Initialize();
         _logger.LogInformation("Starting Binance WebSocket service");
-        
         using var socket = new ClientWebSocket();
         try
         {
+            await BinanceConnectionHandler.Connect(socket, BinanceMarketDataFeeds.BaseEndpoint);
+            await BinanceConnectionHandler.Subscribe(socket, BinanceMarketDataMethodTypes.Subscribe, ["btcusdt@ticker"]);
 
+            byte[] buffer = new byte[4096];
+            
+            while (!stoppingToken.IsCancellationRequested && socket.State == WebSocketState.Open)
+            {
+                await BinanceConnectionHandler.Receive(socket, buffer);
+            }
         }
         catch (Exception ex)
         {

@@ -14,7 +14,7 @@ public static class CoinbaseConnectionHandler{
     {
         CoinbaseWebSocketSubscribeMessage subscribe = new(CoinbaseMessageTypes.Subscribe, channel, product_ids);
         string json = JsonConvert.SerializeObject(subscribe);
-        Console.WriteLine("Sending auth subscribe message:");
+        Console.WriteLine("Sending auth subscribe message to Coinbase:");
         Console.WriteLine(json);
 
         var bytesToSend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(json));
@@ -26,13 +26,13 @@ public static class CoinbaseConnectionHandler{
         var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
         if (result.MessageType == WebSocketMessageType.Close)
         {
-            Console.WriteLine("WebSocket closed.");
+            Console.WriteLine("Coinbase WebSocket closed.");
             await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
         }
         else
         {
             string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-            Console.WriteLine("Received: " + message);
+            Console.WriteLine("Received from Coinbase: " + message);
 
              await RelayServer.BroadcastToClientsAsync(message);
         }
