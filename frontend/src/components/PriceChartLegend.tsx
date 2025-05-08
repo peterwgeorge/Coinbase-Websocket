@@ -13,7 +13,7 @@ export default function PriceChartLegend() {
           lineHeight: 1,
         }}
       >
-        <span style={{ color: '#8884d8', fontSize: '1.2rem' }}>⬤</span>
+        <span style={{ color: '#8884d8', fontSize: '0.75rem' }}>⬤</span>
         <img
           src={CoinbaseLogo}
           alt="Coinbase"
@@ -29,7 +29,7 @@ export default function PriceChartLegend() {
           lineHeight: 1,
         }}
       >
-        <span style={{ color: '#f7931a', fontSize: '1.2rem' }}>⬤</span>
+        <span style={{ color: '#f7931a', fontSize: '0.75rem' }}>⬤</span>
         <img
           src={BinanceLogo}
           alt="Binance"
