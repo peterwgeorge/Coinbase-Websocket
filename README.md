@@ -1,4 +1,4 @@
-# CryptoExchange-Websocket
+# crypto-exchange-streamer
 
 A C# implementation for connecting to cryptocurrency exchange WebSocket APIs—starting with Coinbase and Binance—and visualizing real-time market data in a React frontend. This project was built as a learning tool to explore WebSocket communication, secure API integration, and data visualization across multiple crypto exchanges.
 
@@ -24,8 +24,8 @@ This project demonstrates how to:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/peterwgeorge/CryptoExchange-Websocket.git
-   cd CryptoExchange-Websocket
+   git clone https://github.com/peterwgeorge/crypto-exchange-streamer.git
+   cd crypto-exchange-streamer
    ```
 
 2. Configure AWS credentials:
