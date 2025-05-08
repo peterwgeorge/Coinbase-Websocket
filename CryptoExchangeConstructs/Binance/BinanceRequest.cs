@@ -1,8 +1,8 @@
-namespace BinanceWebSocketConstructs;
+namespace CryptoExchangeConstructs.Binance;
 
 using Newtonsoft.Json;
 
-public class BinanceMarketDataRequest{
+public class BinanceRequest{
     [JsonProperty(PropertyName = "id")]
     public string Id;
 
@@ -12,7 +12,7 @@ public class BinanceMarketDataRequest{
     [JsonProperty(PropertyName = "params")]
     public string[] Params;
 
-    public BinanceMarketDataRequest(string method, string[] symbols){
+    public BinanceRequest(string method, string[] symbols){
         Id = Guid.NewGuid().ToString();
         Method = method;
         Params = symbols;

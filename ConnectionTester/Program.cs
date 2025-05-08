@@ -1,9 +1,7 @@
 ﻿using System.Net.WebSockets;
-using CoinbaseWebSocketConstructs;
 using AmazonSecretsManagerHandler;
 using WebsocketServer.ConnectionHandlers;
-using BinanceWebSocketConstructs;
-using KrakenWebSocketConstructs;
+using CryptoExchangeConstructs.Kraken;
 
 class Program
 {  

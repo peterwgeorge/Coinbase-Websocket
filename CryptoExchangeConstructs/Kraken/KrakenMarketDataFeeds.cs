@@ -1,4 +1,4 @@
-namespace KrakenWebSocketConstructs;
+namespace CryptoExchangeConstructs.Kraken;
 
 public static class KrakenMarketDataFeeds{
     public const string Endpoint = "wss://ws.kraken.com/v2";

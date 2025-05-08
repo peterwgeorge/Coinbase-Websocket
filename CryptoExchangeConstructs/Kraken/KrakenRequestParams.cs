@@ -1,4 +1,5 @@
-namespace KrakenWebSocketConstructs;
+namespace CryptoExchangeConstructs.Kraken;
+
 
 using Newtonsoft.Json;
 

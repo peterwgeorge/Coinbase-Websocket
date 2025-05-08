@@ -1,4 +1,4 @@
-using BinanceWebSocketConstructs;
+using CryptoExchangeConstructs.Binance;
 using WebsocketServer.ConnectionHandlers;
 using System.Net.WebSockets;
 

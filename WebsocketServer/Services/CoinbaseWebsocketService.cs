@@ -1,5 +1,5 @@
 using AmazonSecretsManagerHandler;
-using CoinbaseWebSocketConstructs;
+using CryptoExchangeConstructs.Coinbase;
 using System.Net.WebSockets;
 
 public class CoinbaseWebSocketService : BackgroundService

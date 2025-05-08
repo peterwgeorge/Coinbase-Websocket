@@ -1,7 +1,7 @@
 using System.Text;
 using System.Net.WebSockets;
 using Newtonsoft.Json;
-using CoinbaseWebSocketConstructs;
+using CryptoExchangeConstructs.Coinbase;
 
 public static class CoinbaseConnectionHandler{
     public static async Task Connect(ClientWebSocket socket, string feed){
@@ -12,7 +12,7 @@ public static class CoinbaseConnectionHandler{
 
     public static async Task Subscribe(ClientWebSocket socket, string channel, string[] product_ids)
     {
-        CoinbaseWebSocketSubscribeMessage subscribe = new(CoinbaseMessageTypes.Subscribe, channel, product_ids);
+        CoinbaseRequest subscribe = new(CoinbaseMessageTypes.Subscribe, channel, product_ids);
         string json = JsonConvert.SerializeObject(subscribe);
         Console.WriteLine("Sending auth subscribe message to Coinbase:");
         Console.WriteLine(json);

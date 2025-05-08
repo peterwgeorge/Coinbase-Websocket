@@ -3,7 +3,7 @@ namespace WebsocketServer.ConnectionHandlers;
 using System.Text;
 using System.Net.WebSockets;
 using Newtonsoft.Json;
-using KrakenWebSocketConstructs;
+using CryptoExchangeConstructs.Kraken;
 
 public static class KrakenConnectionHandler{
     public static async Task Connect(ClientWebSocket socket, string feed){
@@ -14,7 +14,7 @@ public static class KrakenConnectionHandler{
 
     public static async Task Subscribe(ClientWebSocket socket, string channel, string[] product_ids)
     {
-        KrakenMarketDataRequest request = new(KrakenMethodTypes.Subscribe, product_ids, channel);
+        KrakenRequest request = new(KrakenMethodTypes.Subscribe, product_ids, channel);
         string json = JsonConvert.SerializeObject(request);
         Console.WriteLine("Sending Kraken request message:");
         Console.WriteLine(json);
