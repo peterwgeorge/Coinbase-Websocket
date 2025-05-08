@@ -16,6 +16,7 @@
     <ProjectReference Include="../CryptoExchangeConstructs/Coinbase/CoinbaseWebSocketConstructs/CoinbaseWebSocketConstructs.csproj" />
     <ProjectReference Include="../CryptoExchangeConstructs/Binance/BinanceWebSocketConstructs/BinanceWebSocketConstructs.csproj" />
     <ProjectReference Include="../AmazonSecretsManagerHandler/AmazonSecretsManagerHandler.csproj" />
+    <ProjectReference Include="../CryptoExchangeConstructs/Kraken/KrakenWebSocketConstructs/KrakenWebSocketConstructs.csproj" />
   </ItemGroup>
   <ItemGroup>
   <None Update="appsettings.json">

@@ -3,6 +3,7 @@ using CoinbaseWebSocketConstructs;
 using AmazonSecretsManagerHandler;
 using WebsocketServer.ConnectionHandlers;
 using BinanceWebSocketConstructs;
+using KrakenWebSocketConstructs;
 
 class Program
 {  
@@ -11,14 +12,13 @@ class Program
         using (var socket = new ClientWebSocket())
         {
             try{
-                await SecretsProvider.Initialize();
-                await BinanceConnectionHandler.Connect(socket, BinanceMarketDataFeeds.BaseEndpoint);
-                await BinanceConnectionHandler.Subscribe(socket, BinanceMarketDataMethodTypes.Subscribe, ["btcusdt@ticker"]);
+                await KrakenConnectionHandler.Connect(socket, KrakenMarketDataFeeds.Endpoint);
+                await KrakenConnectionHandler.Subscribe(socket, "ticker", ["BTC/USD"]);
             
                 byte[] buffer = new byte[4096];
                 while (socket.State == WebSocketState.Open)
                 {
-                    await BinanceConnectionHandler.Receive(socket, buffer);
+                    await KrakenConnectionHandler.Receive(socket, buffer);
                 }
             }
             catch (WebSocketException ex){
