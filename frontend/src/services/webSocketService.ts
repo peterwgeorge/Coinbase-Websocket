@@ -1,3 +1,5 @@
+import { PricePoint } from "../types/price-point";
+
 export class WebSocketService {
     private socket: WebSocket | null = null;
     private listeners: Map<string, (data: any) => void> = new Map();
@@ -22,7 +24,7 @@ export class WebSocketService {
           if(event.data === "Connected to Coinbase WebSocket relay")
             return;
           
-          const data = JSON.parse(event.data);
+          const data = JSON.parse(event.data) as PricePoint;
           this.listeners.forEach(callback => callback(data));
         } catch (error) {
           console.error('Failed to parse WebSocket message:', error);

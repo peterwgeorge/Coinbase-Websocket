@@ -6,11 +6,11 @@ class Program
     static async Task Main(string[] args)
     {
         using var socket = new ClientWebSocket();
-        var handler = new ConnectionHandler(socket, "binance");
+        var handler = new ConnectionHandler(socket, "kraken");
 
         try{
             await handler.Connect();
-            await handler.Subscribe("ticker", ["btcusdt@ticker"]);
+            await handler.Subscribe("ticker", ["BTC/USD"]);
         
             byte[] buffer = new byte[4096];
             while (socket.State == WebSocketState.Open)

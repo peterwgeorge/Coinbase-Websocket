@@ -1,8 +1,8 @@
-namespace CryptoExchangeConstructs.Common;
+namespace CryptoExchangeModels.Common;
 
-using CryptoExchangeConstructs.Binance;
-using CryptoExchangeConstructs.Coinbase;
-using CryptoExchangeConstructs.Kraken;
+using CryptoExchangeModels.Binance;
+using CryptoExchangeModels.Coinbase;
+using CryptoExchangeModels.Kraken;
 
 public static class FeedFactory
 {

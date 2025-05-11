@@ -1,6 +1,6 @@
-namespace CryptoExchangeConstructs.Binance;
+namespace CryptoExchangeModels.Binance;
 
-using CryptoExchangeConstructs.Common;
+using CryptoExchangeModels.Common;
 using Newtonsoft.Json;
 
 public class BinanceRequest : IExchangeRequest

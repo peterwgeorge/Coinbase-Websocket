@@ -1,11 +1,11 @@
-namespace CryptoExchangeConstructs.Coinbase;
+namespace CryptoExchangeModels.Coinbase;
 
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using AmazonSecretsManagerHandler;
 using SignatureHandling;
 using SignatureHandling.Interfaces;
-using CryptoExchangeConstructs.Common;
+using CryptoExchangeModels.Common;
 
 public class CoinbaseRequest : IExchangeRequest
 {

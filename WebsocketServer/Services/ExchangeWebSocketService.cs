@@ -1,5 +1,5 @@
 using AmazonSecretsManagerHandler;
-using CryptoExchangeConstructs.Coinbase;
+using CryptoExchangeModels.Coinbase;
 using WebsocketServer.ConnectionHandlers;
 using System.Net.WebSockets;
 

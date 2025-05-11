@@ -1,4 +1,4 @@
-namespace CryptoExchangeConstructs.Kraken;
+namespace CryptoExchangeModels.Kraken;
 
 
 using Newtonsoft.Json;
