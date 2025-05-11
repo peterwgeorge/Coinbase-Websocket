@@ -3,7 +3,7 @@ namespace WebsocketServer.ConnectionHandlers;
 using System.Text;
 using System.Net.WebSockets;
 using Newtonsoft.Json;
-using CryptoExchangeConstructs.Common;
+using CryptoExchangeModels.Common;
 
 public class ConnectionHandler{
     
