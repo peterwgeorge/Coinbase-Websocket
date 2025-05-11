@@ -4,21 +4,18 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { webSocketService } from '../services/webSocketService';
 import { createAlignedPriceSeries } from '../utils/dataAlignment';
 import { retainRecentPrices } from '../utils/history';
-import { extractPricePoint } from '../utils/priceParsers';
 import { PricePoint } from '../types/price-point';
 import ConnectionStatus from './ConnectionStatus';
 import PriceChartLegend from './PriceChartLegend';
 
 export const PriceChart: React.FC = () => {
   const [isConnected, setIsConnected] = useState(false);
-  const [coinbaseData, setCoinbaseData] = useState<PricePoint[]>([]);
-  const [binanceData, setBinanceData] = useState<PricePoint[]>([]);
+  const [exchangeData, setExchangeData] = useState<Map<string, PricePoint[]>>(new Map());
 
   const combinedData = React.useMemo(() => {
-    return createAlignedPriceSeries(coinbaseData, binanceData);
-  }, [coinbaseData, binanceData]);
-
-
+    return createAlignedPriceSeries(exchangeData);
+  }, [exchangeData]);
+  
   useEffect(() => {
     connectAndListen();
     webSocketService.addDataListener("priceChart", onMessage);
@@ -93,34 +90,17 @@ export const PriceChart: React.FC = () => {
     setIsConnected(webSocketService.isConnected());
   }
 
-  function onMessage(data: any): void {
-    const parsed = extractPricePoint(data);
-    if (!parsed)
-      return;
-
-    const setter = getHistoryUpdater(parsed.source);
-    if (setter) {
-      updatePriceHistory(parsed, setter);
-    }
-  }
-
-  function getHistoryUpdater(source: string): React.Dispatch<React.SetStateAction<PricePoint[]>> | undefined {
-    switch (source) {
-      case 'coinbase': return setCoinbaseData;
-      case 'binance': return setBinanceData;
-      default: return undefined;
-    }
-  }
+  function onMessage(data: PricePoint): void {
+    if (!data || isNaN(data.price)) return;
   
-  function updatePriceHistory(
-    price: PricePoint | undefined,
-    setPriceData: React.Dispatch<React.SetStateAction<PricePoint[]>>
-  ) {
-    if (price && !isNaN(price.price)) {
-      setPriceData(prev => retainRecentPrices(prev, price, 30_000));
-    }
+    setExchangeData(prev => {
+      const updated = new Map(prev);
+      const history = updated.get(data.exchange) ?? [];
+      const newHistory = retainRecentPrices(history, data, 30_000);
+      updated.set(data.exchange, newHistory);
+      return updated;
+    });
   }
-
 }
 
 

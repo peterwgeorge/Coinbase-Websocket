@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <ProjectReference Include="../CryptoExchangeModels/CryptoExchangeModels.csproj" />
+  </ItemGroup>
+
 </Project>

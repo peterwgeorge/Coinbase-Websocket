@@ -4,6 +4,8 @@ using System.Text;
 using System.Net.WebSockets;
 using Newtonsoft.Json;
 using CryptoExchangeModels.Common;
+using Normalization.Parse;
+using Normalization.Types;
 
 public class ConnectionHandler{
     
@@ -46,8 +48,11 @@ public class ConnectionHandler{
         {
             string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
             Console.WriteLine($"Received from {Exchange}: " + message);
+            PricePoint p = ExchangeDataParser.GetPricePoint(message);
+            if(p.Exchange == "unknown")
+                return;
 
-            await RelayServer.BroadcastToClientsAsync(message);
+            await RelayServer.BroadcastToClientsAsync(JsonConvert.SerializeObject(p));
         }
     }
 }
