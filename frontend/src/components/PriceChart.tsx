@@ -17,15 +17,11 @@ export const PriceChart: React.FC = () => {
   }, [exchangeData]);
   
   useEffect(() => {
-    connectAndListen();
-    webSocketService.addDataListener("priceChart", onMessage);
-    const intervalId = setInterval(handleStatusInterval, 5000);
-
+    webSocketService.addListener("priceChart", {onMessage, onOpen, onClose});
+    webSocketService.connect();
+    
     return () => {
-      clearInterval(intervalId);
-      webSocketService.disconnect();
-      setIsConnected(false);
-      webSocketService.removeDataListener("priceChart");
+      webSocketService.removeListener("priceChart");
     };
   }, []);
 
@@ -83,19 +79,12 @@ export const PriceChart: React.FC = () => {
 
   );
 
-  function connectAndListen() {
-    webSocketService.connect();
-    setIsConnected(webSocketService.isConnected());
+  function onOpen(){
+    setIsConnected(true);
   }
 
-  function handleStatusInterval() {
-    if (!webSocketService.isConnected()) {
-      console.log("Lost connection. Reconnecting...");
-      webSocketService.disconnect();
-      connectAndListen();
-    }
-
-    setIsConnected(webSocketService.isConnected());
+  function onClose(){
+    setIsConnected(false);
   }
 
   function onMessage(data: PricePoint): void {
